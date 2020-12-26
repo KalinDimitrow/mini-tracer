@@ -1,1 +1,6 @@
 /target
+Cargo.lock
+modules.xml
+vcs.xml
+workspace.xml
+mini-tracer.iml
