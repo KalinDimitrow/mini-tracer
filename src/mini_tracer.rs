@@ -53,7 +53,7 @@ impl MiniTracer {
                     }
                 }
                 Event::RedrawRequested(_) => {
-                    let scene = Scene{};
+                    let scene = Scene::new();
                     ctx.update();
                     let image = renderer.render(&mut ctx, &scene);
                     match ctx.render(image) {
