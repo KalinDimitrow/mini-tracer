@@ -1,5 +1,4 @@
 use std::ops::{Add, Sub, Mul, Div, AddAssign, SubAssign, MulAssign, DivAssign};
-use std::process::Output;
 
 #[derive(Clone)]
 pub struct Color {

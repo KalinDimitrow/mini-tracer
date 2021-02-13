@@ -1,6 +1,14 @@
-use crate::scene::elements::scene_element::Material;
-use crate::scene::light::Light;
-use crate::auxiliary::{color::Color, ray::Ray, intersection_info::IntersectionInfo};
+use crate::scene::{
+    elements::scene_element::Material,
+    light::Light
+};
+
+use crate::auxiliary::{
+    intersection_info::IntersectionInfo,
+    color::Color,
+    ray::Ray,
+};
+
 use num::{ToPrimitive, Integer};
 
 
@@ -17,10 +25,10 @@ impl CheckerMaterial {
 }
 
 impl Material for CheckerMaterial {
-    fn color(&self, ray : &Ray, intersection_info : &IntersectionInfo, lights : &[Light]) -> Color {
+    fn color(&self, _ray : &Ray, intersection_info : &IntersectionInfo, lights : &[Light]) -> Color {
         let mut acumulator = Color::new(0.0, 0.0, 0.0);
         for light in lights {
-            let light_direction = (&light.location - &intersection_info.point);
+            let light_direction = &light.location - &intersection_info.point;
             let light_distance = light_direction.magnitude();
             let light_intensity = light_direction.dot(&intersection_info.normal).abs() * light.intensity / (light_distance*light_distance);
             acumulator += light_intensity * light.color.clone();

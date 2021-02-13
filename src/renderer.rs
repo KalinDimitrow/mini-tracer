@@ -1,14 +1,17 @@
-use nalgebra::{Point3, Vector3};
-use rand::{distributions::Uniform, Rng};
+use nalgebra::{Point3};
 
-use crate::auxiliary::{color::Color, ray::Ray};
-use crate::auxiliary::intersection_info::IntersectionInfo;
 use crate::rendering_context::RenderingContext;
-use crate::scene::camera::Camera;
-use crate::scene::elements::scene_element::SceneElement;
-use crate::scene::geometries::plane::Plane;
-use crate::scene::elements::checker_board::CheckerBoard;
-use crate::scene::light::Light;
+use crate::auxiliary::{
+    intersection_info::IntersectionInfo,
+    color::Color,
+    ray::Ray,
+};
+use crate::scene::{
+    elements::{scene_element::SceneElement, checker_board::CheckerBoard},
+    camera::Camera,
+    light::Light,
+};
+
 use crate::texture::Texture;
 
 pub struct Scene {
@@ -21,7 +24,7 @@ impl Scene {
     pub fn new() -> Scene {
         let mut elements : Vec<Box<dyn SceneElement>> = Vec::new();
         elements.push(Box::new(CheckerBoard::new()));
-        let mut lights = vec![Light::new(Point3::new(-5.0, 1.0, 20.0), Color::new(1.0, 1.0, 1.0), 5.0)];
+        let lights = vec![Light::new(Point3::new(0.0, 1.0, 20.0), Color::new(1.0, 1.0, 1.0), 5.0)];
         Scene {camera : Camera::new(Point3::new(0.0, 8.0, 0.0), 20.0, 0.0, 0.0, 1.33333, 90.0, (800, 600)),
                 elements,
                 lights,
@@ -35,25 +38,27 @@ pub trait Renderer {
 
 
 pub struct SoftwareRayTracer {
-    rng : rand::rngs::ThreadRng
 }
 
 impl SoftwareRayTracer {
     pub fn new() -> Self {
-        SoftwareRayTracer{rng : rand::thread_rng()}
+        SoftwareRayTracer{}
     }
     fn reytrace(&mut self, ray : Ray, scene : &Scene) -> Color {
         let mut closest_intersection_info = IntersectionInfo::new();
-        let mut result_color = Color::new(0.0,0.0,0.0);
+        let mut closest_node = None;
         for element  in &scene.elements {
             if let Some(info) = element.geometry().intersect(&ray) {
                 if closest_intersection_info.compare(info) {
-                    result_color = element.material().color(&ray, &closest_intersection_info, &scene.lights);
+                    closest_node = Some(element);
                 }
             }
         }
 
-        return result_color;
+        if let Some(node) = closest_node {
+            return node.material().color(&ray, &closest_intersection_info, &scene.lights);
+        }
+        return Color::new(0.0,0.0,0.0);
     }
 }
 

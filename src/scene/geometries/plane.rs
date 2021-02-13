@@ -1,6 +1,6 @@
-use nalgebra::{Point3, Vector3, Matrix3, Rotation3};
-use crate::auxiliary::{ray::Ray, color::Color, intersection_info::IntersectionInfo};
-use crate::scene::elements::scene_element::{SceneElement, Geometry};
+use nalgebra::{Point3, Vector3};
+use crate::auxiliary::{ray::Ray, intersection_info::IntersectionInfo};
+use crate::scene::elements::scene_element::{Geometry};
 
 pub struct Plane {
     position : Point3<f32>,
@@ -10,20 +10,6 @@ pub struct Plane {
 impl Plane {
     pub fn new( position : Point3<f32>, normal : Vector3<f32>) -> Self {
         Plane {position, normal}
-    }
-
-    pub fn intersect(&self, ray : &Ray) -> bool {
-        // plane can be described by point (p0) belonging to the plane and normal vector
-        // ray can be describe by starting point (l0) and 
-        let denominator = ray.direction.dot(&self.normal);
-        if denominator < 1e-6 {
-            let p0l0 = &self.position - &ray.start;
-            let t = p0l0.dot(&self.normal) / denominator;
-
-            return t > 0.0;
-        }
-
-        return false;
     }
 }
 
@@ -37,7 +23,7 @@ impl Geometry for Plane {
             let t = p0l0.dot(&self.normal) / denominator;
 
 
-            if (t > 0.0) {
+            if t > 0.0 {
                 let point = &ray.start + &ray.direction*t;
                 let normal = self.normal.clone();
                 let offset = point - self.position;

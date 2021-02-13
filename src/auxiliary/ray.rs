@@ -1,4 +1,4 @@
-use nalgebra::{Point3, Vector3, Matrix3, Rotation3};
+use nalgebra::{Point3, Vector3};
 
 pub struct Ray {
     pub start : Point3<f32>,

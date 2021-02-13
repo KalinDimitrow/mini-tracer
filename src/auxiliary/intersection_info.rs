@@ -1,4 +1,4 @@
-use nalgebra::{Point3, Vector3, Matrix3, Rotation3};
+use nalgebra::{Point3, Vector3};
 
 pub struct IntersectionInfo {
     pub point : Point3<f32>,
@@ -20,7 +20,7 @@ impl IntersectionInfo {
     }
 
     pub fn compare(&mut self, other : Self) -> bool {
-        if (self.distance > other.distance) {
+        if self.distance > other.distance {
             *self = other;
             return true;
         }

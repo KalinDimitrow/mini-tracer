@@ -1,8 +1,10 @@
-use nalgebra::{Point3, Vector3, Matrix3, Rotation3};
-use crate::auxiliary::{ray::Ray, color::Color, intersection_info::IntersectionInfo};
-use crate::scene::elements::scene_element::{SceneElement, Geometry, Material};
-use crate::scene::geometries::plane::Plane;
-use crate::scene::materials::checker_board_material::CheckerMaterial;
+use nalgebra::{Point3, Vector3};
+use crate::auxiliary::{color::Color};
+use crate::scene::{
+    elements::scene_element::{SceneElement, Geometry, Material},
+    materials::checker_board_material::CheckerMaterial,
+    geometries::plane::Plane
+};
 
 pub struct CheckerBoard {
     plane : Plane,
@@ -18,11 +20,11 @@ impl CheckerBoard {
 }
 
 impl SceneElement for CheckerBoard {
-    fn geometry(&self)-> &Geometry {
+    fn geometry(&self)-> &dyn Geometry {
         &self.plane
     }
 
-    fn material(&self) -> &Material {
+    fn material(&self) -> &dyn Material {
         &self.material
     }
 }

@@ -1,4 +1,4 @@
-use nalgebra::{Point3, Vector3, Matrix3, Rotation3};
+use nalgebra::{Point3};
 use crate::auxiliary::color::Color;
 
 pub struct Light {

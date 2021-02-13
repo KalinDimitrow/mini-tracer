@@ -1,8 +1,7 @@
-use nalgebra::{Point3, Vector3, Matrix3, Rotation3};
-
+use nalgebra::{Point3, Vector3, Rotation3};
 use crate::auxiliary::ray::Ray;
-use glam::Vec3;
 
+#[allow(dead_code)]
 pub struct Camera {
     pub position : Point3<f32>,
     pitch : f32,
