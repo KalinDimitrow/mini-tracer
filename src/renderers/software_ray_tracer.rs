@@ -1,41 +1,14 @@
-use nalgebra::{Point3};
-
-use crate::rendering_context::RenderingContext;
+use crate::renderers::{
+    rendering_context::RenderingContext,
+    renderer::Renderer
+};
 use crate::auxiliary::{
     intersection_info::IntersectionInfo,
+    texture::HardwareTexture,
     color::Color,
     ray::Ray,
 };
-use crate::scene::{
-    elements::{scene_element::SceneElement, checker_board::CheckerBoard},
-    camera::Camera,
-    light::Light,
-};
-
-use crate::texture::Texture;
-
-pub struct Scene {
-    pub camera : Camera,
-    pub elements : Vec<Box<dyn SceneElement>>,
-    pub lights : Vec<Light>,
-}
-
-impl Scene {
-    pub fn new() -> Scene {
-        let mut elements : Vec<Box<dyn SceneElement>> = Vec::new();
-        elements.push(Box::new(CheckerBoard::new()));
-        let lights = vec![Light::new(Point3::new(0.0, 1.0, 20.0), Color::new(1.0, 1.0, 1.0), 5.0)];
-        Scene {camera : Camera::new(Point3::new(0.0, 8.0, 0.0), 20.0, 0.0, 0.0, 1.33333, 90.0, (800, 600)),
-                elements,
-                lights,
-        }
-    }
-}
-
-pub trait Renderer {
-    fn render(&mut self, ctx : &mut RenderingContext, scene : &Scene) -> Option<Texture>;
-}
-
+use crate::scene::scene::Scene;
 
 pub struct SoftwareRayTracer {
 }
@@ -63,7 +36,7 @@ impl SoftwareRayTracer {
 }
 
 impl Renderer for SoftwareRayTracer {
-    fn render(&mut self, ctx : &mut RenderingContext, scene : &Scene) -> Option<Texture> {
+    fn render(&mut self, ctx : &mut RenderingContext, scene : &Scene) -> Option<HardwareTexture> {
 
         let mut image = Vec::with_capacity((ctx.size.width * ctx.size.height * 4) as usize);
         for y in 0..(ctx.size.height) {
@@ -76,7 +49,7 @@ impl Renderer for SoftwareRayTracer {
         }
 
         let diffuse_texture =
-            Texture::from_raw(&ctx.device, &ctx.queue, &image, (ctx.size.width, ctx.size.height), None).unwrap();
+            HardwareTexture::from_raw(&ctx.device, &ctx.queue, &image, (ctx.size.width, ctx.size.height), None).unwrap();
 
         Some(diffuse_texture)
     }

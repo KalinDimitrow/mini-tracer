@@ -1,8 +1,6 @@
-mod texture;
-mod renderer;
 mod mini_tracer;
-mod rendering_context;
 mod auxiliary;
+mod renderers;
 mod scene;
 
 use crate::mini_tracer::MiniTracer;

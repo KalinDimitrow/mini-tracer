@@ -1,5 +1,8 @@
-use crate::rendering_context::RenderingContext;
-use crate::renderer::*;
+use crate::renderers::{
+    rendering_context::RenderingContext,
+    software_ray_tracer::SoftwareRayTracer,
+    renderer::Renderer
+};
 
 use winit::{
     event::*,
@@ -7,7 +10,7 @@ use winit::{
     window::{WindowBuilder},
 };
 
-
+use crate::scene::scene_manager::SceneManager;
 
 pub struct MiniTracer {
 }
@@ -24,6 +27,8 @@ impl MiniTracer {
         let window = WindowBuilder::new().build(&event_loop).unwrap();
         let mut ctx = RenderingContext::new(&window)?;
         let mut renderer : Box<dyn Renderer> = Box::new(SoftwareRayTracer::new());
+        let scene_manager = SceneManager::new();
+        let scene = scene_manager.load("path to scene not implemented");
         event_loop.run(move |event, _, control_flow| {
             match event {
                 Event::WindowEvent {
@@ -53,7 +58,6 @@ impl MiniTracer {
                     }
                 }
                 Event::RedrawRequested(_) => {
-                    let scene = Scene::new();
                     ctx.update();
                     let image = renderer.render(&mut ctx, &scene);
                     match ctx.render(image) {

@@ -1,12 +1,11 @@
-use crate::texture::Texture;
-
 use std::iter;
-
 use wgpu::util::DeviceExt;
 use winit::{
     event::*,
     window::{Window},
 };
+
+use crate::auxiliary::texture::HardwareTexture;
 
 #[derive(Clone, PartialEq, Eq, Debug)]
 struct NoDisplayAdaptorError {}
@@ -80,8 +79,6 @@ pub struct RenderingContext {
     vertex_buffer: wgpu::Buffer,
     index_buffer: wgpu::Buffer,
     num_indices: u32,
-    // #[allow(dead_code)]
-    // cached_diffuse_texture: Texture,
     cached_diffuse_bind_group: wgpu::BindGroup,
 }
 
@@ -103,7 +100,7 @@ impl RenderingContext {
 
         let img : Vec<u8> = vec![0; size.width as usize * size.height as usize * 4];
         let diffuse_texture =
-                Texture::from_raw(&device, &queue, &img, (size.width, size.height), Some("empty image")).unwrap();
+                HardwareTexture::from_raw(&device, &queue, &img, (size.width, size.height), Some("empty image")).unwrap();
 
         let texture_bind_group_layout =
             device.create_bind_group_layout(&wgpu::BindGroupLayoutDescriptor {
@@ -143,8 +140,8 @@ impl RenderingContext {
             label: Some("diffuse_bind_group"),
         });
 
-        let vs_module = device.create_shader_module(wgpu::include_spirv!("shader.vert.spv"));
-        let fs_module = device.create_shader_module(wgpu::include_spirv!("shader.frag.spv"));
+        let vs_module = device.create_shader_module(wgpu::include_spirv!("shaders/shader.vert.spv"));
+        let fs_module = device.create_shader_module(wgpu::include_spirv!("shaders/shader.frag.spv"));
 
         let render_pipeline_layout =
             device.create_pipeline_layout(&wgpu::PipelineLayoutDescriptor {
@@ -263,7 +260,7 @@ impl RenderingContext {
     pub fn update(&mut self) {}
 
     #[allow(dead_code)]
-    pub fn render(&mut self, image : Option<Texture>) -> Result<(), wgpu::SwapChainError> {
+    pub fn render(&mut self, image : Option<HardwareTexture>) -> Result<(), wgpu::SwapChainError> {
         let frame = self.swap_chain.get_current_frame()?.output;
 
         let mut encoder = self
