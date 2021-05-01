@@ -12,7 +12,7 @@ pub struct Camera {
     top_left : Vector3<f32>,
     right_direction : Vector3<f32>,
     down_direction : Vector3<f32>,
-    resolution : (u32, u32),
+    pub resolution : (u32, u32),
 }
 
 impl Camera {
@@ -34,8 +34,8 @@ impl Camera {
         let top_left = rotation * top_left;
         let top_right = rotation * top_right;
         let bottom_left = rotation * bottom_left;
-        let right_direction = (top_right - top_left);
-        let down_direction = (bottom_left - top_left);
+        let right_direction = top_right - top_left;
+        let down_direction = bottom_left - top_left;
         Camera {position, pitch, yaw, row, aspect_ratio, fov, top_left, right_direction, down_direction, resolution}
     }
 

@@ -8,6 +8,7 @@ use winit::{
     event::*,
     event_loop::{ControlFlow, EventLoop},
     window::{WindowBuilder},
+    dpi::LogicalSize,
 };
 
 use crate::scene::scene_manager::SceneManager;
@@ -61,7 +62,9 @@ impl MiniTracer {
                     ctx.update();
                     let image = renderer.render(&mut ctx, &scene);
                     match ctx.render(image) {
-                        Ok(_) => {}
+                        Ok(dimensions) => {
+                            window.set_inner_size(LogicalSize::new(dimensions.0, dimensions.1));
+                        }
                         // Recreate the swap_chain if lost
                         Err(wgpu::SwapChainError::Lost) => ctx.resize(ctx.size),
                         // The system is out of memory, we should probably quit

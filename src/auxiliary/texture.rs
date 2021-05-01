@@ -5,6 +5,7 @@ pub struct HardwareTexture {
     pub texture: wgpu::Texture,
     pub view: wgpu::TextureView,
     pub sampler: wgpu::Sampler,
+    pub dimensions : (u32, u32)
 }
 
 impl HardwareTexture {
@@ -72,6 +73,7 @@ impl HardwareTexture {
             texture,
             view,
             sampler,
+            dimensions,
         })
     }
 

@@ -80,6 +80,7 @@ pub struct RenderingContext {
     index_buffer: wgpu::Buffer,
     num_indices: u32,
     cached_diffuse_bind_group: wgpu::BindGroup,
+    cached_frame : HardwareTexture,
 }
 
 impl RenderingContext {
@@ -208,9 +209,9 @@ impl RenderingContext {
             vertex_buffer,
             index_buffer,
             num_indices,
-            // diffuse_texture,
             cached_diffuse_bind_group,
             size,
+            cached_frame : diffuse_texture,
         })
     }
 
@@ -260,7 +261,7 @@ impl RenderingContext {
     pub fn update(&mut self) {}
 
     #[allow(dead_code)]
-    pub fn render(&mut self, image : Option<HardwareTexture>) -> Result<(), wgpu::SwapChainError> {
+    pub fn render(&mut self, image : Option<HardwareTexture>) -> Result<(u32, u32), wgpu::SwapChainError> {
         let frame = self.swap_chain.get_current_frame()?.output;
 
         let mut encoder = self
@@ -308,7 +309,7 @@ impl RenderingContext {
                 ],
                 label: Some("diffuse_bind_group"),
             });
-
+            self.cached_frame = diffuse_texture;
         }
 
         {
@@ -338,6 +339,6 @@ impl RenderingContext {
 
         self.queue.submit(iter::once(encoder.finish()));
 
-        Ok(())
+        Ok(self.cached_frame.dimensions)
     }
 }
