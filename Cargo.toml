@@ -9,16 +9,14 @@ edition = "2018"
 [dependencies]
 anyhow = "1.0.34"
 image = "0.23"
-winit = "0.23.0"
-glam = { version = "0.10.1", default-features = false, features = ["libm"] }
+winit = "0.24.0"
+glam = { version = "0.14.0", default-features = false, features = ["libm"] }
 bytemuck = { version = "1.4", features = [ "derive" ] }
 futures = "0.3"
 log = "0.4"
 env_logger = "0.8.2"
 rand = "0.8.0"
-num = "0.3.1"
-nalgebra = "0.24"
-
-[dependencies.wgpu]
-version = "0.6.2"
-features = ["vulkan-portability"]
+num = "0.4"
+nalgebra = "0.26.2"
+wgpu = "0.8.0"
+wgpu-types = "0.8.0" 
