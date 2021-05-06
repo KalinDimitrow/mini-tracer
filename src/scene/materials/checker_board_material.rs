@@ -30,7 +30,7 @@ impl Material for CheckerMaterial {
         for light in lights {
             let light_direction = &light.location - &intersection_info.point;
             let light_distance = light_direction.magnitude();
-            let light_intensity = light_direction.dot(&intersection_info.normal).abs() * light.intensity / (light_distance*light_distance);
+            let light_intensity = light_direction.dot(intersection_info.normal.as_ref()).abs() * light.intensity / (light_distance*light_distance);
             acumulator += light_intensity * light.color.clone();
         }
         let value = (intersection_info.u / self.size).floor().to_i32().unwrap() + (intersection_info.v / self.size).floor().to_i32().unwrap();

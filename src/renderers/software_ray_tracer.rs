@@ -5,7 +5,6 @@ use crate::renderers::{
     renderer::Renderer
 };
 use crate::auxiliary::{
-    intersection_info::IntersectionInfo,
     texture::HardwareTexture,
     color::Color,
     ray::Ray,
@@ -20,18 +19,19 @@ impl SoftwareRayTracer {
         SoftwareRayTracer{}
     }
     fn reytrace(&mut self, ray : Ray, scene : &Scene) -> Color {
-        let mut closest_intersection_info = IntersectionInfo::new();
+        let mut closest_intersection_info = None;
         let mut closest_node = None;
         for element  in &scene.elements {
-            if let Some(info) = element.geometry().intersect(&ray) {
-                if closest_intersection_info.compare(info) {
+            if let Some(mut info) = element.geometry().intersect(&ray) {
+                if info.compare(&closest_intersection_info) {
+                    closest_intersection_info = Some(info);
                     closest_node = Some(element);
                 }
             }
         }
 
         if let Some(node) = closest_node {
-            return node.material().color(&ray, &closest_intersection_info, &scene.lights);
+            return node.material().color(&ray, &closest_intersection_info.unwrap(), &scene.lights);
         }
         return Color::new(0.0,0.0,0.0);
     }

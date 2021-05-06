@@ -1,4 +1,4 @@
-use nalgebra::{Point3, Vector3};
+use nalgebra::{Point3, Vector3, Unit};
 use crate::auxiliary::{color::Color};
 use crate::scene::{
     elements::scene_element::{SceneElement, Geometry, Material},
@@ -13,7 +13,7 @@ pub struct CheckerBoard {
 
 impl CheckerBoard {
     pub fn new() -> Self {
-        let plane = Plane::new(Point3::new(0.0, 0.0, 0.0), Vector3::new(0.0, 1.0, 0.0));
+        let plane = Plane::new(Point3::new(0.0, 0.0, 0.0), Unit::new_and_get(Vector3::new(0.0, 1.0, 0.0)).0, 0.5f32);
         let material = CheckerMaterial::new(Color::new(1.0, 0.0, 0.0), Color::new(0.0, 0.0, 0.0), 1.0);
         Self {plane, material}
     }
