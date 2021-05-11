@@ -28,7 +28,7 @@ impl Geometry for Plane {
 
 
             if t > 0.0 {
-                let point = &ray.start + &ray.direction*t;
+                let point = &ray.start + ray.direction.as_ref()*t;
                 let normal = self.normal.clone();
                 let offset = point - self.position;
                 let rotation = Rotation3::from_axis_angle(&self.normal, self.rotation);

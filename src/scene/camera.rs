@@ -1,4 +1,4 @@
-use nalgebra::{Point3, Vector3, Rotation3};
+use nalgebra::{Point3, Unit, Vector3, Rotation3};
 use crate::auxiliary::ray::Ray;
 
 #[allow(dead_code)]
@@ -44,6 +44,7 @@ impl Camera {
         let mut direction = &self.top_left + (x / self.resolution.0 as f32) * &self.right_direction;
         direction  += (y / self.resolution.1 as f32) * &self.down_direction;
         let start = &self.position + direction;
+        let direction = Unit::new_and_get(direction).0;
         
         Ray {start , direction }
     }
