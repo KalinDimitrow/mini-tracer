@@ -1,4 +1,4 @@
-use nalgebra::{Point3, Vector3, Unit};
+use nalgebra::{Point3};
 use crate::auxiliary::{color::Color};
 use crate::scene::{
     elements::scene_element::{SceneElement, Geometry, Material},

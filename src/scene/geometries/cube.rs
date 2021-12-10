@@ -1,4 +1,4 @@
-use nalgebra::{Point3, Vector3, Rotation3};
+use nalgebra::{Point3, Vector3};
 use crate::auxiliary::{ray::Ray, intersection_info::IntersectionInfo, rotation_utils::from_euler_angles};
 use crate::scene::elements::scene_element::Geometry;
 use crate::scene::geometries::rectangle::Rectangle;

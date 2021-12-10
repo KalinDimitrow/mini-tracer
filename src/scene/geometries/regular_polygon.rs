@@ -1,7 +1,6 @@
 use nalgebra::{Point3, Vector3, Rotation3};
 use crate::auxiliary::{ray::Ray, intersection_info::IntersectionInfo};
 use crate::scene::elements::scene_element::Geometry;
-use crate::scene::geometries::rectangle::Rectangle;
 use crate::scene::geometries::plane::Plane;
 
 pub struct RegularPolygon {

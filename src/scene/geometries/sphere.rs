@@ -1,5 +1,4 @@
 use nalgebra::{Point3, Vector3, Rotation3, Unit};
-use num::Float;
 use crate::auxiliary::{ray::Ray, intersection_info::IntersectionInfo};
 use crate::scene::elements::scene_element::{Geometry};
 

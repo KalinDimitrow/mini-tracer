@@ -2,7 +2,7 @@
 use nalgebra::{Point3, Unit, Vector3};
 use crate::auxiliary::color::Color;
 use crate::scene::{
-    elements::{scene_element::SceneElement, checker_board::CheckerBoard, generic_scene_element::GenericSceneElement},
+    elements::{scene_element::SceneElement, generic_scene_element::GenericSceneElement},
     camera::Camera,
     light::Light,
     geometries::plane::Plane,
