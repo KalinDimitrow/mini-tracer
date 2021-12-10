@@ -1,16 +1,25 @@
 use nalgebra::{Point3, Vector3, Rotation3, Unit};
-use crate::auxiliary::{ray::Ray, intersection_info::IntersectionInfo};
-use crate::scene::elements::scene_element::{Geometry};
+use crate::auxiliary::{ray::Ray, intersection_info::IntersectionInfo, rotation_utils::from_euler_angles};
+use crate::scene::elements::scene_element::Geometry;
 
 pub struct Plane {
     position : Point3<f32>,
     normal : Unit<Vector3<f32>>,
-    rotation : f32
+    u : Unit<Vector3<f32>>,
+    v : Unit<Vector3<f32>>,
 }
 
 impl Plane {
-    pub fn new( position : Point3<f32>, normal : Unit<Vector3<f32>>, rotation : f32) -> Self {
-        Plane {position, normal, rotation}
+    pub fn new( position : Point3<f32>, roll : f32, pitch : f32, yaw : f32) -> Self {
+        let rotation = from_euler_angles(roll, pitch, yaw);
+        let normal = Unit::new_and_get(rotation*Vector3::new(0.0f32, 1.0f32, 0.0f32)).0;
+        let u = Unit::new_and_get(rotation*Vector3::new(1.0f32, 0.0f32, 0.0f32)).0;
+        let v = Unit::new_and_get(rotation*Vector3::new(0.0f32, 0.0f32, -1.0f32)).0;
+        // println!("normal {:?}", normal);
+        // println!("U {:?}", u); 
+        // println!("V {:?}", v);
+        // println!("position {:?}", position);
+        Plane {position, normal, u, v}
     }
 }
 
@@ -31,9 +40,9 @@ impl Geometry for Plane {
                 let point = &ray.start + ray.direction.as_ref()*t;
                 let normal = self.normal.clone();
                 let offset = point - self.position;
-                let rotation = Rotation3::from_axis_angle(&self.normal, self.rotation);
-                let offset = rotation*offset;
-                return Some(IntersectionInfo{point, normal, distance : t, u : offset.x, v : offset.z})
+                let u = offset.dot(&self.u);
+                let v = offset.dot(&self.v);
+                return Some(IntersectionInfo{point, normal, distance : t, u , v })
             }
             return None;
         }

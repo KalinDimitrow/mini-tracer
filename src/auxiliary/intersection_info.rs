@@ -12,12 +12,12 @@ impl IntersectionInfo {
     pub fn compare(&mut self, other : &Option<Self>) -> bool {
         if let Some(other) = other {
             if self.distance < other.distance {
-                return true;
+                true
+            } else {
+                false
             }
         } else {
-            return true;
+            true
         }
-
-        false
     }
 }

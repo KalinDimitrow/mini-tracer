@@ -12,11 +12,12 @@ use crate::auxiliary::{
 use crate::scene::scene::Scene;
 
 pub struct SoftwareRayTracer {
+    cached : bool,
 }
 
 impl SoftwareRayTracer {
     pub fn new() -> Self {
-        SoftwareRayTracer{}
+        SoftwareRayTracer{cached : false}
     }
     fn reytrace(&mut self, ray : Ray, scene : &Scene) -> Color {
         let mut closest_intersection_info = None;
@@ -26,6 +27,8 @@ impl SoftwareRayTracer {
                 if info.compare(&closest_intersection_info) {
                     closest_intersection_info = Some(info);
                     closest_node = Some(element);
+                } else {
+                    // closest_intersection_info = Some()
                 }
             }
         }

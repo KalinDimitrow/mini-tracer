@@ -13,7 +13,7 @@ pub struct CheckerBoard {
 
 impl CheckerBoard {
     pub fn new() -> Self {
-        let plane = Plane::new(Point3::new(0.0, 0.0, 0.0), Unit::new_and_get(Vector3::new(0.0, 1.0, 0.0)).0, 0f32);
+        let plane = Plane::new(Point3::new(0.0, 0.0, 18.0), 0f32, 0f32, 0f32);
         let material = CheckerMaterial::new(Color::new(1.0, 0.0, 0.0), Color::new(0.0, 0.0, 0.0), 1.0);
         Self {plane, material}
     }
