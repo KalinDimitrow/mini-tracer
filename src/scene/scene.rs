@@ -9,6 +9,7 @@ use crate::scene::{
     geometries::sphere::Sphere,
     geometries::rectangle::Rectangle,
     geometries::cube::Cube,
+    geometries::triangle::Triangle,
     materials::checker_board_material::CheckerMaterial,
 };
 
@@ -21,7 +22,6 @@ pub struct Scene {
 impl Scene {
     pub fn new() -> Scene {
         let mut elements : Vec<Box<dyn SceneElement>> = Vec::new();
-        // elements.push(Box::new(CheckerBoard::new()));
         elements.push(Box::new(GenericSceneElement{
             geometry : Box::new(Plane::new(Point3::new(0.0, 0.0, 0.0), 0f32, 0f32, 0f32)),
             material : Box::new(CheckerMaterial::new(Color::new(1.0, 0.0, 0.0), Color::new(0.0, 0.0, 0.0), 1.0)),
@@ -37,6 +37,18 @@ impl Scene {
 
         elements.push(Box::new(GenericSceneElement{
             geometry : Box::new(Cube::new(Point3::new(5f32, 4f32, -15f32), 0f32, -std::f32::consts::PI/4f32, -std::f32::consts::PI/4f32, 5f32)),
+            material : Box::new(CheckerMaterial::new(Color::new(0.0, 0.0, 1.0), Color::new(0.0, 1.0, 0.0), 1f32)),
+        }));
+        elements.push(Box::new(GenericSceneElement{
+            geometry : Box::new(Cube::new(Point3::new(5f32, 4f32, -15f32), 0f32, -std::f32::consts::PI/4f32, -std::f32::consts::PI/4f32, 5f32)),
+            material : Box::new(CheckerMaterial::new(Color::new(0.0, 0.0, 1.0), Color::new(0.0, 1.0, 0.0), 1f32)),
+        }));
+        elements.push(Box::new(        GenericSceneElement{
+            geometry : Box::new(
+                Triangle::new(
+                    Point3::new(-3.0, 5f32, -8f32)
+                , Point3::new(3f32, 5f32, -8f32)
+                , Point3::new(0.0, 8.0, -8.0))),
             material : Box::new(CheckerMaterial::new(Color::new(0.0, 0.0, 1.0), Color::new(0.0, 1.0, 0.0), 1f32)),
         }));
         let lights = vec![Light::new(Point3::new(0.0, 10.0, 0.0), Color::new(1.0, 1.0, 1.0), 50.0)];

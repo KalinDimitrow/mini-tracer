@@ -1,10 +1,10 @@
-use nalgebra::{Point3, Vector3, Unit};
+use nalgebra::{Point3, Vector3, Unit, Vector2};
 use crate::auxiliary::{ray::Ray, intersection_info::IntersectionInfo, rotation_utils::from_euler_angles};
 use crate::scene::elements::scene_element::Geometry;
 
 pub struct Plane {
     position : Point3<f32>,
-    normal : Unit<Vector3<f32>>,
+    pub normal : Unit<Vector3<f32>>,
     u : Unit<Vector3<f32>>,
     v : Unit<Vector3<f32>>,
 }
@@ -15,10 +15,11 @@ impl Plane {
         let normal = Unit::new_and_get(rotation*Vector3::new(0.0f32, 1.0f32, 0.0f32)).0;
         let u = Unit::new_and_get(rotation*Vector3::new(1.0f32, 0.0f32, 0.0f32)).0;
         let v = Unit::new_and_get(rotation*Vector3::new(0.0f32, 0.0f32, -1.0f32)).0;
-        // println!("normal {:?}", normal);
-        // println!("U {:?}", u); 
-        // println!("V {:?}", v);
-        // println!("position {:?}", position);
+        Plane::new_from_vectors(position, normal, u, v)
+    }
+
+    pub fn new_from_vectors(position : Point3<f32>, normal : Unit<Vector3<f32>>, u : Unit<Vector3<f32>>, v : Unit<Vector3<f32>>) -> Self {
+        // add check if arguments are valid (orthogonal to each other)
         Plane {position, normal, u, v}
     }
 }
@@ -40,9 +41,8 @@ impl Geometry for Plane {
                 let point = &ray.start + ray.direction.as_ref()*t;
                 let normal = self.normal.clone();
                 let offset = point - self.position;
-                let u = offset.dot(&self.u);
-                let v = offset.dot(&self.v);
-                return Some(IntersectionInfo{point, normal, distance : t, u , v })
+                let uv = Vector2::new(offset.dot(&self.u), offset.dot(&self.v));
+                return Some(IntersectionInfo{point, normal, distance : t, uv })
             }
             return None;
         }

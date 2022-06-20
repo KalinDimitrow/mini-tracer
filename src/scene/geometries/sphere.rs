@@ -1,4 +1,4 @@
-use nalgebra::{Point3, Vector3, Rotation3, Unit};
+use nalgebra::{Point3, Vector3, Rotation3, Unit, Vector2};
 use crate::auxiliary::{ray::Ray, intersection_info::IntersectionInfo};
 use crate::scene::elements::scene_element::{Geometry};
 
@@ -37,8 +37,7 @@ impl Sphere {
             point,
             normal,
             distance : t,
-            u : Self::u(&relative_normal),
-            v : Self::v(&relative_normal)
+            uv : Vector2::new(Self::u(&relative_normal), Self::v(&relative_normal))
         })
     }
 

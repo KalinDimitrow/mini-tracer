@@ -33,7 +33,7 @@ impl Material for CheckerMaterial {
             let light_intensity = light_direction.dot(intersection_info.normal.as_ref()).abs() * light.intensity / (light_distance*light_distance);
             acumulator += light_intensity * light.color.clone();
         }
-        let value = (intersection_info.u / self.size).floor().to_i32().unwrap() + (intersection_info.v / self.size).floor().to_i32().unwrap();
+        let value = (intersection_info.uv.x / self.size).floor().to_i32().unwrap() + (intersection_info.uv.y / self.size).floor().to_i32().unwrap();
         if value.is_even() {
             self.color1.clone() * acumulator
         } else {

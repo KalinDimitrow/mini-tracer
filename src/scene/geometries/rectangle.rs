@@ -17,10 +17,10 @@ impl Geometry for Rectangle {
     fn intersect(&self, ray : &Ray) ->Option<IntersectionInfo> {
         let intersection = self.plane.intersect(ray);
         if let Some(intersection) = intersection {
-            if -self.size.0*0.5f32 < intersection.u && 
-                intersection.u < self.size.0*0.5f32 &&
-                -self.size.1*0.5f32 < intersection.v && 
-                intersection.v < self.size.1*0.5f32 {
+            if -self.size.0*0.5f32 < intersection.uv.x &&
+                intersection.uv.x < self.size.0*0.5f32 &&
+                -self.size.1*0.5f32 < intersection.uv.y &&
+                intersection.uv.y < self.size.1*0.5f32 {
                     return Some(intersection);
             } 
         }
