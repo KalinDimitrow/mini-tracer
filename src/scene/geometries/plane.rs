@@ -3,10 +3,10 @@ use crate::auxiliary::{ray::Ray, intersection_info::IntersectionInfo, rotation_u
 use crate::scene::elements::scene_element::Geometry;
 
 pub struct Plane {
-    position : Point3<f32>,
+    pub position : Point3<f32>,
     pub normal : Unit<Vector3<f32>>,
-    u : Unit<Vector3<f32>>,
-    v : Unit<Vector3<f32>>,
+    pub u : Unit<Vector3<f32>>,
+    pub v : Unit<Vector3<f32>>,
 }
 
 impl Plane {
@@ -15,6 +15,7 @@ impl Plane {
         let normal = Unit::new_and_get(rotation*Vector3::new(0.0f32, 1.0f32, 0.0f32)).0;
         let u = Unit::new_and_get(rotation*Vector3::new(1.0f32, 0.0f32, 0.0f32)).0;
         let v = Unit::new_and_get(rotation*Vector3::new(0.0f32, 0.0f32, -1.0f32)).0;
+
         Plane::new_from_vectors(position, normal, u, v)
     }
 
